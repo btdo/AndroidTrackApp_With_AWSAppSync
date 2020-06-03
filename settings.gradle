@@ -1,0 +1,2 @@
+rootProject.name='Trackappsyncapp'
+include ':app'
