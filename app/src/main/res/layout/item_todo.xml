@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="item"
             type="com.wwm.trackappsyncapp.TrackItem" />
@@ -20,7 +19,7 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             style="@style/SectionHeaderBlack111111"
-            android:text="@{item.pin}"
+            android:text="@{item.userId}"
             android:ellipsize="end"
             android:singleLine="true"
             android:layout_marginStart="@dimen/margin_xxxxlarge"
