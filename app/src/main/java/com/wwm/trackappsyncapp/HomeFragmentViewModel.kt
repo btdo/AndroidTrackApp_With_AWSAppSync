@@ -20,6 +20,7 @@ class HomeFragmentViewModel() : ViewModel() {
     }
 }
 
+@ExperimentalCoroutinesApi
 class HomeFragmentViewModelFactory() :
     ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
