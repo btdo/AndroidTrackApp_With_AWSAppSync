@@ -9,13 +9,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 class HomeFragmentViewModel() : ViewModel() {
 
-    private val _list = MutableLiveData<List<TrackItem>>()
-    val list: LiveData<List<TrackItem>>
+    private val _list = MutableLiveData<List<TrackItemModel>>()
+    val list: LiveData<List<TrackItemModel>>
         get() = _list
 
     init {
-        val trackList = mutableListOf<TrackItem>()
-        trackList.add(TrackItem("btdo", "EB1231232WEB"))
+        val trackList = mutableListOf<TrackItemModel>()
+        trackList.add(TrackItemModel("btdo", "EB1231232WEB"))
         _list.value = trackList
     }
 }

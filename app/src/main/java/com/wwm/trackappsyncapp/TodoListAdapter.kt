@@ -11,7 +11,7 @@ class TodoListAdapter(
     private var mClickListener: ItemClickedListener,
     private var itemDeleteListener: ItemDeleteListener
 ) :
-    ListAdapter<TrackItem, TodoListAdapter.ItemViewHolder>(DiffCallback) {
+    ListAdapter<TrackItemModel, TodoListAdapter.ItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -27,17 +27,17 @@ class TodoListAdapter(
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<TrackItem>() {
+    companion object DiffCallback : DiffUtil.ItemCallback<TrackItemModel>() {
         override fun areItemsTheSame(
-            oldItem: TrackItem,
-            newItem: TrackItem
+            oldItem: TrackItemModel,
+            newItem: TrackItemModel
         ): Boolean {
             return oldItem.pin == newItem.pin
         }
 
         override fun areContentsTheSame(
-            oldItem: TrackItem,
-            newItem: TrackItem
+            oldItem: TrackItemModel,
+            newItem: TrackItemModel
         ): Boolean {
             return oldItem == newItem
         }
@@ -48,7 +48,7 @@ class TodoListAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: TrackItem) {
+        fun bind(item: TrackItemModel) {
             binding.item = item
             binding.itemDelete.setOnClickListener { deleteListener.onClick(item) }
             binding.executePendingBindings()
@@ -56,10 +56,10 @@ class TodoListAdapter(
     }
 }
 
-class ItemClickedListener(val clickListener: (day: TrackItem) -> Unit) {
-    fun onClick(item: TrackItem) = clickListener(item)
+class ItemClickedListener(val clickListener: (day: TrackItemModel) -> Unit) {
+    fun onClick(item: TrackItemModel) = clickListener(item)
 }
 
-class ItemDeleteListener(val clickListener: (day: TrackItem) -> Unit) {
-    fun onClick(item: TrackItem) = clickListener(item)
+class ItemDeleteListener(val clickListener: (day: TrackItemModel) -> Unit) {
+    fun onClick(item: TrackItemModel) = clickListener(item)
 }

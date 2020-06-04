@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun deleteTask(item: TrackItem) {
+    private fun deleteTask(item: TrackItemModel) {
 
     }
 

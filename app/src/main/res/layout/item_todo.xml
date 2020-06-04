@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.wwm.trackappsyncapp.TrackItem" />
+            type="com.wwm.trackappsyncapp.TrackItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
