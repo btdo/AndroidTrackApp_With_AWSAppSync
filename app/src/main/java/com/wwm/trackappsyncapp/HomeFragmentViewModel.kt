@@ -19,6 +19,19 @@ class HomeFragmentViewModel() : ViewModel() {
 
     init {
         query()
+        subscribe()
+    }
+
+    private fun subscribe() {
+        Amplify.DataStore.observe(TrackItem::class.java,
+            { Log.i("MyAmplifyApp", "Observation began.") },
+            {
+                Log.i("MyAmplifyApp", "Observing: ${it.item()}")
+                query()
+            },
+            { Log.e("MyAmplifyApp", "Observation failed.", it) },
+            { Log.i("MyAmplifyApp", "Observation complete.") }
+        )
     }
 
     fun query () {
