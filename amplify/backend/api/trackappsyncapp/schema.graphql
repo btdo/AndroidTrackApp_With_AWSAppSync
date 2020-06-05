@@ -1,6 +1,6 @@
 type TrackItem @model {
     id: ID!
     pin: String!
-    userId: String!
+    userId: String
     description: String
 }

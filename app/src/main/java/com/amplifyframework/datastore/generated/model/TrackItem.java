@@ -25,7 +25,7 @@ public final class TrackItem implements Model {
   public static final QueryField DESCRIPTION = field("description");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String pin;
-  private final @ModelField(targetType="String", isRequired = true) String userId;
+  private final @ModelField(targetType="String") String userId;
   private final @ModelField(targetType="String") String description;
   public String getId() {
       return id;
@@ -126,23 +126,19 @@ public final class TrackItem implements Model {
       description);
   }
   public interface PinStep {
-    UserIdStep pin(String pin);
-  }
-  
-
-  public interface UserIdStep {
-    BuildStep userId(String userId);
+    BuildStep pin(String pin);
   }
   
 
   public interface BuildStep {
     TrackItem build();
     BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep userId(String userId);
     BuildStep description(String description);
   }
   
 
-  public static class Builder implements PinStep, UserIdStep, BuildStep {
+  public static class Builder implements PinStep, BuildStep {
     private String id;
     private String pin;
     private String userId;
@@ -159,7 +155,7 @@ public final class TrackItem implements Model {
     }
     
     @Override
-     public UserIdStep pin(String pin) {
+     public BuildStep pin(String pin) {
         Objects.requireNonNull(pin);
         this.pin = pin;
         return this;
@@ -167,7 +163,6 @@ public final class TrackItem implements Model {
     
     @Override
      public BuildStep userId(String userId) {
-        Objects.requireNonNull(userId);
         this.userId = userId;
         return this;
     }
