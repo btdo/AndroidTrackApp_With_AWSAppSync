@@ -1,1 +1,4 @@
 /build
+/src/main/graphql/com/amazonaws/amplify/generated/graphql/
+/src/main/java/com/amplifyframework/datastore/generated/model/
+/src/main/graphql/
