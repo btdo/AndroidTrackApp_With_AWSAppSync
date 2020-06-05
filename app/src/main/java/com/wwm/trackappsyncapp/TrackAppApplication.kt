@@ -4,8 +4,10 @@ import android.app.Application
 import android.util.Log
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
+import com.amplifyframework.api.aws.ApiAuthProviders
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.AWSDataStorePlugin
+import com.wwm.trackappsyncapp.auth.AuthenticationServiceImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,8 +26,9 @@ class TrackAppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         try {
+            val authProviders = ApiAuthProviders.builder().oidcAuthProvider(AuthenticationServiceImpl).build()
             Amplify.addPlugin(AWSDataStorePlugin())
-            Amplify.addPlugin(AWSApiPlugin()) // If using remote model synchronization
+            Amplify.addPlugin(AWSApiPlugin(authProviders)) // If using remote model synchronization
             Amplify.configure(applicationContext)
             Log.i("MyAmplifyApp", "Initialized Amplify")
         } catch (error: AmplifyException) {
