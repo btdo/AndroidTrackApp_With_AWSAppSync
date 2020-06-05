@@ -1,0 +1,62 @@
+# this is an auto generated file. This will be overwritten
+query SyncTrackItems(
+  $filter: ModelTrackItemFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncTrackItems(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      pin
+      userId
+      description
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetTrackItem($id: ID!) {
+  getTrackItem(id: $id) {
+    id
+    pin
+    userId
+    description
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+query ListTrackItems(
+  $filter: ModelTrackItemFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTrackItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      pin
+      userId
+      description
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
