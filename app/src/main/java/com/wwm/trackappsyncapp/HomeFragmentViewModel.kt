@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.generated.model.TrackItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -27,10 +28,29 @@ class HomeFragmentViewModel() : ViewModel() {
                 while (it.hasNext()) {
                     val item = it.next()
                     Log.i("MyAmplifyApp", "Title: ${item.pin}")
-                    list.add(TrackItemModel(item.userId, item.pin, item.description))
+                    list.add(TrackItemModel(item.id, item.userId, item.pin, item.description))
                 }
 
                 _list.postValue(list)
+            },
+            { Log.e("MyAmplifyApp", "Query failed.", it) }
+        )
+    }
+
+    fun delete(item: TrackItemModel){
+        Amplify.DataStore.query(TrackItem::class.java, Where.id(item.id),
+            { matches ->
+                if (matches.hasNext()) {
+                    val post = matches.next()
+                    Amplify.DataStore.delete(post,
+                        {
+                            Log.i("MyAmplifyApp", "Deleted a post.")
+                        },
+                        {
+                            Log.e("MyAmplifyApp", "Delete failed.", it)
+                        }
+                    )
+                }
             },
             { Log.e("MyAmplifyApp", "Query failed.", it) }
         )

@@ -39,7 +39,7 @@ class ItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.button_done).setOnClickListener {
-            val item = TrackItemModel(
+            val item = TrackItemModel("dummy",
                 binding.userIdInput.text.toString(),
                 binding.pinInput.text.toString()
             )
