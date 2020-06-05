@@ -1,9 +1,12 @@
 package com.wwm.trackappsyncapp
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.datastore.generated.model.TrackItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -14,9 +17,23 @@ class HomeFragmentViewModel() : ViewModel() {
         get() = _list
 
     init {
-        val trackList = mutableListOf<TrackItemModel>()
-        trackList.add(TrackItemModel("btdo", "EB1231232WEB"))
-        _list.value = trackList
+        query()
+    }
+
+    fun query () {
+        Amplify.DataStore.query(TrackItem::class.java,
+            {
+                val list = mutableListOf<TrackItemModel>()
+                while (it.hasNext()) {
+                    val item = it.next()
+                    Log.i("MyAmplifyApp", "Title: ${item.pin}")
+                    list.add(TrackItemModel(item.userId, item.pin, item.description))
+                }
+
+                _list.postValue(list)
+            },
+            { Log.e("MyAmplifyApp", "Query failed.", it) }
+        )
     }
 }
 
