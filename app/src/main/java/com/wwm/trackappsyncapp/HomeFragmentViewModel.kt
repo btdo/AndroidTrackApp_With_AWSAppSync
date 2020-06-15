@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.core.model.query.predicate.QueryPredicate
 import com.amplifyframework.datastore.generated.model.TrackItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -35,6 +36,7 @@ class HomeFragmentViewModel() : ViewModel() {
     }
 
     fun query () {
+        //Amplify.DataStore.query(TrackItem::class.java, Where.matches(TrackItem.USER_ID.eq("sbteststg02"))
         Amplify.DataStore.query(TrackItem::class.java,
             {
                 val list = mutableListOf<TrackItemModel>()
