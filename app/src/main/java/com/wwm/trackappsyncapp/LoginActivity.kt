@@ -10,7 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.api.aws.ApiAuthProviders
+import com.amplifyframework.core.Action
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.Consumer
 import com.amplifyframework.datastore.AWSDataStorePlugin
 import com.google.android.material.textfield.TextInputEditText
 import com.wwm.trackappsyncapp.auth.AuthenticationServiceImpl
@@ -50,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
             } catch (error: AmplifyException) {
                 Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
             }
-
+            // Amplify.DataStore.clear(Action { Timber.d("Cache Cleared") }, Consumer { Timber.e("Error while clearing cache") })
             goToMainActivity(AuthenticationServiceImpl.idToken!!)
         }
     }
