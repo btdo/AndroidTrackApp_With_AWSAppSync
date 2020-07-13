@@ -40,6 +40,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun deleteTask(item: TrackItemModel) {
+        viewModel.delete(item);
 
     }
 
