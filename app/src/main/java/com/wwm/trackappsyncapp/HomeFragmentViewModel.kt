@@ -5,8 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.IdentityProvider
+import com.amplifyframework.api.ApiOperation
+import com.amplifyframework.api.graphql.model.ModelQuery
+import com.amplifyframework.api.graphql.model.ModelSubscription
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.core.model.query.predicate.QueryPredicate
 import com.amplifyframework.datastore.generated.model.TrackItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -36,6 +42,7 @@ class HomeFragmentViewModel() : ViewModel() {
     }
 
     fun query () {
+        //Where.matches(TrackItem.USER_ID.eq("sbteststg02")
         Amplify.DataStore.query(
             TrackItem::class.java,
             {

@@ -23,6 +23,7 @@
 
         <action
             android:id="@+id/action_ItemFragment_to_HomeFragment"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/FirstFragment"
+            app:popUpTo="@id/nav_graph" />
     </fragment>
 </navigation>
