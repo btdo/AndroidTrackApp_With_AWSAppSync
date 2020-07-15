@@ -32,7 +32,7 @@ class HomeFragmentViewModel() : ViewModel() {
         // queryDataStore()
         // subscribeDataSource()
         queryAPI()
-        subscripeAPI()
+        subscribeAPI()
     }
 
     override fun onCleared() {
@@ -42,7 +42,7 @@ class HomeFragmentViewModel() : ViewModel() {
         subscriptionUpdate?.let { it.cancel() }
     }
 
-    private fun subscripeAPI() {
+    private fun subscribeAPI() {
         subscriptionCreate = Amplify.API.subscribe(
             ModelSubscription.onCreate(TrackItem::class.java),
             { Log.i("ApiQuickStart", "Subscription established") },
@@ -130,7 +130,9 @@ class HomeFragmentViewModel() : ViewModel() {
                 for (todo in response.data) {
                     Amplify.API.mutate(
                         ModelMutation.delete(todo) ,
-                        { Log.i("MyAmplifyApp", "Deleted a post.") },
+                        { Log.i("MyAmplifyApp", "Deleted a post.")
+                            queryAPI()
+                        },
                         { Log.e("MyAmplifyApp", "Save failed.", it) }
                     )
                 }
