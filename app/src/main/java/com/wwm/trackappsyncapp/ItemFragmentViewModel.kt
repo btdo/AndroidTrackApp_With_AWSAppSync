@@ -3,12 +3,21 @@ package com.wwm.trackappsyncapp
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.amplifyframework.api.graphql.model.ModelMutation
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.generated.model.TrackItem
 
 class ItemFragmentViewModel : ViewModel() {
 
     fun addItem(task: TrackItemModel) {
+        val post = TrackItem.builder().userId(task.userId).pin(task.pin).description("").build()
+        Amplify.API.mutate(ModelMutation.create(post) ,
+            { Log.i("MyAmplifyApp", "Saved a post.") },
+            { Log.e("MyAmplifyApp", "Save failed.", it) }
+        )
+    }
+
+    fun addItemDataStore(task: TrackItemModel) {
         val post = TrackItem.builder().userId(task.userId).pin(task.pin).description("").build()
         Amplify.DataStore.save(post,
             { Log.i("MyAmplifyApp", "Saved a post.") },
