@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.amplifyframework.api.ApiOperation
 import com.amplifyframework.api.graphql.GraphQLRequest
 import com.amplifyframework.api.graphql.PaginatedResult
 import com.amplifyframework.api.graphql.model.ModelMutation
 import com.amplifyframework.api.graphql.model.ModelPagination
 import com.amplifyframework.api.graphql.model.ModelQuery
+import com.amplifyframework.api.graphql.model.ModelSubscription
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.generated.model.TrackItem
@@ -22,10 +24,48 @@ class HomeFragmentViewModel() : ViewModel() {
     val list: LiveData<List<TrackItemModel>>
         get() = _list
 
+    var subscriptionCreate: ApiOperation<*>? = null
+    var subscriptionDelete: ApiOperation<*>? = null
+    var subscriptionUpdate: ApiOperation<*>? = null
+
     init {
         // queryDataStore()
         // subscribeDataSource()
         queryAPI()
+        subscripeAPI()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        subscriptionCreate?.let { it.cancel() }
+        subscriptionDelete?.let { it.cancel() }
+        subscriptionUpdate?.let { it.cancel() }
+    }
+
+    private fun subscripeAPI() {
+        subscriptionCreate = Amplify.API.subscribe(
+            ModelSubscription.onCreate(TrackItem::class.java),
+            { Log.i("ApiQuickStart", "Subscription established") },
+            { onCreated -> queryAPI() },
+            { onFailure -> Log.e("ApiQuickStart", "Subscription failed", onFailure) },
+            { Log.i("ApiQuickStart", "Subscription completed") }
+        )
+
+        subscriptionUpdate = Amplify.API.subscribe(
+            ModelSubscription.onUpdate(TrackItem::class.java),
+            { Log.i("ApiQuickStart", "Subscription established") },
+            { onCreated -> queryAPI() },
+            { onFailure -> Log.e("ApiQuickStart", "Subscription failed", onFailure) },
+            { Log.i("ApiQuickStart", "Subscription completed") }
+        )
+
+        subscriptionDelete = Amplify.API.subscribe(
+            ModelSubscription.onDelete(TrackItem::class.java),
+            { Log.i("ApiQuickStart", "Subscription established") },
+            { onDeleted ->   queryAPI() },
+            { onFailure -> Log.e("ApiQuickStart", "Subscription failed", onFailure) },
+            { Log.i("ApiQuickStart", "Subscription completed") }
+        )
     }
 
     private fun subscribeDataSource() {
@@ -90,7 +130,7 @@ class HomeFragmentViewModel() : ViewModel() {
                 for (todo in response.data) {
                     Amplify.API.mutate(
                         ModelMutation.delete(todo) ,
-                        { Log.i("MyAmplifyApp", "Saved a post.") },
+                        { Log.i("MyAmplifyApp", "Deleted a post.") },
                         { Log.e("MyAmplifyApp", "Save failed.", it) }
                     )
                 }

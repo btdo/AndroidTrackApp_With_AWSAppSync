@@ -1,5 +1,0 @@
-{
-    "AppSyncApiName": "TrackAppSyncApp_Cognito",
-    "DynamoDBBillingMode": "PAY_PER_REQUEST",
-    "DynamoDBEnableServerSideEncryption": "false"
-}
