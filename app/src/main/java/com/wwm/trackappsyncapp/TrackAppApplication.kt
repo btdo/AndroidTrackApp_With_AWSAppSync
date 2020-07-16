@@ -26,7 +26,7 @@ class TrackAppApplication : Application() {
         // delayedInit()
         try {
             Amplify.addPlugin(AWSApiPlugin())
-            Amplify.addPlugin(AWSDataStorePlugin())
+            // Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.configure(applicationContext)
             Log.i("Tutorial", "Initialized Amplify")
         } catch (e: AmplifyException) {

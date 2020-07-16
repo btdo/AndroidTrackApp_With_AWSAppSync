@@ -46,24 +46,36 @@ class HomeFragmentViewModel() : ViewModel() {
         subscriptionCreate = Amplify.API.subscribe(
             ModelSubscription.onCreate(TrackItem::class.java),
             { Log.i("ApiQuickStart", "Subscription established") },
-            { onCreated -> queryAPI() },
-            { onFailure -> Log.e("ApiQuickStart", "Subscription failed", onFailure) },
-            { Log.i("ApiQuickStart", "Subscription completed") }
+            { onCreated ->
+                queryAPI()
+            },
+            { onFailure ->
+                Log.e("ApiQuickStart", "Subscription failed", onFailure)
+            },
+            {
+                Log.i("ApiQuickStart", "Subscription completed")
+            }
         )
 
         subscriptionUpdate = Amplify.API.subscribe(
             ModelSubscription.onUpdate(TrackItem::class.java),
             { Log.i("ApiQuickStart", "Subscription established") },
             { onCreated -> queryAPI() },
-            { onFailure -> Log.e("ApiQuickStart", "Subscription failed", onFailure) },
+            { onFailure ->
+                Log.e("ApiQuickStart", "Subscription failed", onFailure)
+            },
             { Log.i("ApiQuickStart", "Subscription completed") }
         )
 
         subscriptionDelete = Amplify.API.subscribe(
             ModelSubscription.onDelete(TrackItem::class.java),
             { Log.i("ApiQuickStart", "Subscription established") },
-            { onDeleted ->   queryAPI() },
-            { onFailure -> Log.e("ApiQuickStart", "Subscription failed", onFailure) },
+            { onDeleted ->
+                queryAPI()
+            },
+            { onFailure ->
+                Log.e("ApiQuickStart", "Subscription failed", onFailure)
+             },
             { Log.i("ApiQuickStart", "Subscription completed") }
         )
     }
@@ -130,10 +142,12 @@ class HomeFragmentViewModel() : ViewModel() {
                 for (todo in response.data) {
                     Amplify.API.mutate(
                         ModelMutation.delete(todo) ,
-                        { Log.i("MyAmplifyApp", "Deleted a post.")
-                            queryAPI()
+                        {
+                            Log.i("MyAmplifyApp", "Deleted a post.")
                         },
-                        { Log.e("MyAmplifyApp", "Save failed.", it) }
+                        {
+                            Log.e("MyAmplifyApp", "Save failed.", it)
+                        }
                     )
                 }
             },
