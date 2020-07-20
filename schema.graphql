@@ -1,0 +1,9 @@
+type TrackItem @model
+{
+    id: ID!
+    userId: String!
+    pin: String!
+    description: String
+    type: String
+    createdDate: AWSDateTime
+}
