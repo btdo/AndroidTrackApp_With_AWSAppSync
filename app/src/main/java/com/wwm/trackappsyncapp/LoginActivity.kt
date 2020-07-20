@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
             }
 
-            // Amplify.DataStore.clear(Action { Timber.d("Cache Cleared") }, Consumer { Timber.e("Error while clearing cache") })
+            Amplify.DataStore.clear(Action { Timber.d("Cache Cleared") }, Consumer { Timber.e("Error while clearing cache") })
             goToMainActivity(AuthenticationServiceImpl.idToken!!)
         }
     }
