@@ -5,5 +5,4 @@ type TrackItem @model
     pin: String!
     description: String
     type: String
-    createdDate: AWSDateTime
 }
