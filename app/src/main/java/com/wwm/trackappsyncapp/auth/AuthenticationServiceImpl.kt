@@ -2,13 +2,14 @@ package com.wwm.trackappsyncapp.auth
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.amplifyframework.api.aws.sigv4.OidcAuthProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 
 object AuthenticationServiceImpl :
-    AuthenticationService {
+    AuthenticationService, OidcAuthProvider {
     private var _loggedIn: MutableLiveData<Boolean> = MutableLiveData()
     override val loggedIn: LiveData<Boolean>
         get() = _loggedIn
@@ -21,6 +22,10 @@ object AuthenticationServiceImpl :
 
     private var oAuthResponse: LoginResponse? = null
 
+
+    override fun getLatestAuthToken(): String {
+        return idToken!!;
+    }
 
     override fun isExpiredStatusCode(code: Int): Boolean {
         if (code == 401 || code == 403) {
