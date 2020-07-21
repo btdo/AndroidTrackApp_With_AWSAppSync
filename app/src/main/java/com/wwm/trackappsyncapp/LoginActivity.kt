@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.textfield.TextInputEditText
 import com.wwm.trackappsyncapp.auth.AuthenticationServiceImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,13 +19,15 @@ class LoginActivity : AppCompatActivity() {
         val loginButton =
             findViewById<Button>(R.id.loginButton)
         loginButton.setOnClickListener {
-            cpcLogin()
+            val username =  findViewById<TextInputEditText>(R.id.username).text.toString()
+            val password =  findViewById<TextInputEditText>(R.id.password).text.toString()
+            cpcLogin(username,password)
         }
     }
 
-    private fun cpcLogin() {
+    private fun cpcLogin(username: String, password: String) {
         lifecycleScope.launch(Dispatchers.Main) {
-            AuthenticationServiceImpl.login("sbstg2napp", "Happy123!")
+            AuthenticationServiceImpl.login(username, password)
             Timber.d("${AuthenticationServiceImpl.accessToken} ${AuthenticationServiceImpl.refreshToken}")
             if (AuthenticationServiceImpl.idToken == null) {
                 Toast.makeText(this@LoginActivity, "Loging Fail", Toast.LENGTH_LONG).show()
