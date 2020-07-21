@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.core.model.query.predicate.QueryPredicate
+import com.amplifyframework.datastore.generated.model.TrackItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -18,12 +19,12 @@ class HomeFragmentViewModel() : ViewModel() {
         get() = _list
 
     init {
-        query()
         subscribe()
     }
 
     private fun subscribe() {
-        /*Amplify.DataStore.observe(TrackItem::class.java,
+        Amplify.DataStore.observe(
+            TrackItem::class.java,
             { Log.i("MyAmplifyApp", "Observation began.") },
             {
                 Log.i("MyAmplifyApp", "Observing: ${it.item()}")
@@ -31,12 +32,12 @@ class HomeFragmentViewModel() : ViewModel() {
             },
             { Log.e("MyAmplifyApp", "Observation failed.", it) },
             { Log.i("MyAmplifyApp", "Observation complete.") }
-        )*/
+        )
     }
 
     fun query () {
         //Amplify.DataStore.query(TrackItem::class.java, Where.matches(TrackItem.USER_ID.eq("sbteststg02"))
-        /*Amplify.DataStore.query(TrackItem::class.java,
+        Amplify.DataStore.query(TrackItem::class.java,
             {
                 val list = mutableListOf<TrackItemModel>()
                 while (it.hasNext()) {
@@ -48,26 +49,30 @@ class HomeFragmentViewModel() : ViewModel() {
                 _list.postValue(list)
             },
             { Log.e("MyAmplifyApp", "Query failed.", it) }
-        )*/
+        )
     }
 
     fun delete(item: TrackItemModel){
-       /* Amplify.DataStore.query(TrackItem::class.java, Where.id(item.id),
-            { matches ->
-                if (matches.hasNext()) {
-                    val post = matches.next()
-                    Amplify.DataStore.delete(post,
-                        {
-                            Log.i("MyAmplifyApp", "Deleted a post.")
-                        },
-                        {
-                            Log.e("MyAmplifyApp", "Delete failed.", it)
-                        }
-                    )
-                }
-            },
-            { Log.e("MyAmplifyApp", "Query failed.", it) }
-        )*/
+        Amplify.DataStore.query(TrackItem::class.java, Where.id(item.id),
+        { matches ->
+            if (matches.hasNext()) {
+                val post = matches.next()
+                Amplify.DataStore.delete(post,
+                    {
+                        Log.i("MyAmplifyApp", "Deleted a post.")
+                    },
+                    {
+                        Log.e("MyAmplifyApp", "Delete failed.", it)
+                    }
+                )
+            }
+        },
+        { Log.e("MyAmplifyApp", "Query failed.", it) }
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }
 

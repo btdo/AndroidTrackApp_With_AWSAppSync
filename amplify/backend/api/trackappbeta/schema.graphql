@@ -1,0 +1,12 @@
+type TrackItem @model
+    @key(name: "byUserIdAndCreatedAt" fields: ["userId", "createdAt"] queryField: "itemsByUserIdAndCreatedAt")
+    @auth( rules: [ { allow: owner, ownerField: "owner", provider: oidc, identityClaim: "sub" }, { allow: public, operations: [read, create, delete, update] } ])
+{
+    id: ID!
+    userId: String!
+    pin: String!
+    description: String
+    type: String
+    owner: String
+    createdAt: AWSDateTime!
+}

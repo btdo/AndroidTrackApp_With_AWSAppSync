@@ -4,11 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.datastore.generated.model.TrackItem
 
 class ItemFragmentViewModel : ViewModel() {
 
-    fun addItem(task: TrackItemModel) {
-        /*val post = TrackItem.builder().userId(task.userId).pin(task.pin).description("Test") .build()
+    fun addItem(item: TrackItemModel) {
+        val post = TrackItem.builder().userId(item.userId).pin(item.pin).description("Test") .build()
         Amplify.DataStore.save(post,
             {
                 Log.i("MyAmplifyApp", "Saved a post.")
@@ -16,7 +17,7 @@ class ItemFragmentViewModel : ViewModel() {
             {
                 Log.e("MyAmplifyApp", "Save failed.", it)
             }
-        )*/
+        )
     }
 }
 

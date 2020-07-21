@@ -19,10 +19,5 @@
         android:id="@+id/SecondFragment"
         android:name="com.wwm.trackappsyncapp.ItemFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_item">
-
-        <action
-            android:id="@+id/action_ItemFragment_to_HomeFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_item"/>
 </navigation>
