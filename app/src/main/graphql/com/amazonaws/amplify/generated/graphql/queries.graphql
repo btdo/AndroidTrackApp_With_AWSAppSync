@@ -1,0 +1,101 @@
+# this is an auto generated file. This will be overwritten
+query GetTrackItem($id: ID!) {
+  getTrackItem(id: $id) {
+    id
+    userId
+    pin
+    description
+    type
+    owner
+    createdAt
+    _version
+    _deleted
+    _lastChangedAt
+    updatedAt
+  }
+}
+query ListTrackItems(
+  $filter: ModelTrackItemFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTrackItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      userId
+      pin
+      description
+      type
+      owner
+      createdAt
+      _version
+      _deleted
+      _lastChangedAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query ItemsByUserId(
+  $userId: String
+  $pinCreatedAt: ModelTrackItemByUserIdCompositeKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelTrackItemFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  itemsByUserId(
+    userId: $userId
+    pinCreatedAt: $pinCreatedAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      userId
+      pin
+      description
+      type
+      owner
+      createdAt
+      _version
+      _deleted
+      _lastChangedAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncTrackItems(
+  $filter: ModelTrackItemFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncTrackItems(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      userId
+      pin
+      description
+      type
+      owner
+      createdAt
+      _version
+      _deleted
+      _lastChangedAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}

@@ -1,0 +1,29 @@
+{
+	"api": {
+		"trackappcharlie": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"additionalAuthenticationProviders": [{
+						"authenticationType": "OPENID_CONNECT",
+						"openIDConnectConfig": {
+							"name": "innovapost-webseal",
+							"issuerUrl": "https://stg002-www.epost.ca/mga/sps/oauth/oauth20/metadata/cpc-ROPC/",
+							"clientId": "",
+							"iatTTL": "0",
+							"authTTL": "0"
+						}
+					}],
+					"defaultAuthentication": {
+						"authenticationType": "API_KEY",
+						"apiKeyConfig": {
+							"description": "innovapost-backend",
+							"apiKeyExpirationDays": 365
+						}
+					}
+				}
+			}
+		}
+	}
+}

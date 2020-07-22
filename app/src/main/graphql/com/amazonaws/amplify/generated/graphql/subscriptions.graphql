@@ -1,0 +1,46 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreateTrackItem($owner: String!) {
+  onCreateTrackItem(owner: $owner) {
+    id
+    userId
+    pin
+    description
+    type
+    owner
+    createdAt
+    _version
+    _deleted
+    _lastChangedAt
+    updatedAt
+  }
+}
+subscription OnUpdateTrackItem($owner: String!) {
+  onUpdateTrackItem(owner: $owner) {
+    id
+    userId
+    pin
+    description
+    type
+    owner
+    createdAt
+    _version
+    _deleted
+    _lastChangedAt
+    updatedAt
+  }
+}
+subscription OnDeleteTrackItem($owner: String!) {
+  onDeleteTrackItem(owner: $owner) {
+    id
+    userId
+    pin
+    description
+    type
+    owner
+    createdAt
+    _version
+    _deleted
+    _lastChangedAt
+    updatedAt
+  }
+}

@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun deleteTask(item: TrackItemModel) {
-
+        viewModel.delete(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,0 +1,55 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateTrackItem(
+  $input: CreateTrackItemInput!
+  $condition: ModelTrackItemConditionInput
+) {
+  createTrackItem(input: $input, condition: $condition) {
+    id
+    userId
+    pin
+    description
+    type
+    owner
+    createdAt
+    _version
+    _deleted
+    _lastChangedAt
+    updatedAt
+  }
+}
+mutation UpdateTrackItem(
+  $input: UpdateTrackItemInput!
+  $condition: ModelTrackItemConditionInput
+) {
+  updateTrackItem(input: $input, condition: $condition) {
+    id
+    userId
+    pin
+    description
+    type
+    owner
+    createdAt
+    _version
+    _deleted
+    _lastChangedAt
+    updatedAt
+  }
+}
+mutation DeleteTrackItem(
+  $input: DeleteTrackItemInput!
+  $condition: ModelTrackItemConditionInput
+) {
+  deleteTrackItem(input: $input, condition: $condition) {
+    id
+    userId
+    pin
+    description
+    type
+    owner
+    createdAt
+    _version
+    _deleted
+    _lastChangedAt
+    updatedAt
+  }
+}
