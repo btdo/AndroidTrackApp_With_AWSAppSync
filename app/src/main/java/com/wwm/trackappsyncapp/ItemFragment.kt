@@ -20,7 +20,6 @@ class ItemFragment : Fragment() {
     private lateinit var binding: FragmentItemBinding
     private lateinit var viewModel: ItemFragmentViewModel
 
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -39,9 +38,9 @@ class ItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.button_done).setOnClickListener {
-            val item = TrackItemModel(
-                binding.userIdInput.text.toString(),
-                binding.pinInput.text.toString()
+            val item = TrackItemModel("","",
+                binding.pinInput.text.toString(),
+                binding.descriptionInput.text.toString()
             )
             viewModel.addItem(item)
             hideKeyboard()
