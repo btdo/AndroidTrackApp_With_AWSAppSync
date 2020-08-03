@@ -2,10 +2,16 @@ package com.wwm.trackappsyncapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.amplifyframework.AmplifyException
+import com.amplifyframework.api.aws.AWSApiPlugin
+import com.amplifyframework.api.aws.ApiAuthProviders
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.datastore.AWSDataStorePlugin
 import com.google.android.material.textfield.TextInputEditText
 import com.wwm.trackappsyncapp.auth.AuthenticationServiceImpl
 import kotlinx.coroutines.Dispatchers
@@ -33,9 +39,20 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Loging Fail", Toast.LENGTH_LONG).show()
                 return@launch
             }
+
+            try {
+                val authProviders = ApiAuthProviders.builder().oidcAuthProvider(AuthenticationServiceImpl).build()
+                Amplify.addPlugin(AWSApiPlugin(authProviders)) // If using remote model synchronization
+                Amplify.configure(applicationContext)
+                Log.i("MyAmplifyApp", "Initialized Amplify")
+            } catch (error: AmplifyException) {
+                Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
+            }
+
             goToMainActivity(AuthenticationServiceImpl.idToken!!)
         }
     }
+
 
     private fun goToMainActivity(idToken: String) {
         val intent =

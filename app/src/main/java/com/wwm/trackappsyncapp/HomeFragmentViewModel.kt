@@ -15,7 +15,7 @@ class HomeFragmentViewModel() : ViewModel() {
 
     init {
         val trackList = mutableListOf<TrackItemModel>()
-        trackList.add(TrackItemModel("btdo", "EB1231232WEB"))
+        trackList.add(TrackItemModel("", "btdo", "EB1231232WEB"))
         _list.value = trackList
     }
 }
