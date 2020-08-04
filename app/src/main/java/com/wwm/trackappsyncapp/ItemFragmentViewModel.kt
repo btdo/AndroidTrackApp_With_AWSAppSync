@@ -3,6 +3,7 @@ package com.wwm.trackappsyncapp
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.amplifyframework.api.graphql.model.ModelMutation
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.generated.model.TrackSyncItem
 import java.text.SimpleDateFormat
@@ -19,16 +20,13 @@ fun getCurrentDateTime(): Date {
 
 class ItemFragmentViewModel : ViewModel() {
 
-    fun addItem(item: TrackItemModel) {
-        val post = TrackSyncItem.builder().pin(item.pin).description(item.description).insertDateTime(
-            getCurrentDateTime().toString("yyyy-MM-dd HH:mm:ss.SSS")).build()
-        Amplify.DataStore.save(post,
-            {
-                Log.i("MyAmplifyApp", "Saved a post.")
-            },
-            {
-                Log.e("MyAmplifyApp", "Save failed.", it)
-            }
+    fun addItem(task: TrackItemModel) {
+        val item = TrackSyncItem.builder().pin(task.pin).desc(task.description).build()
+
+        Amplify.API.mutate(
+            ModelMutation.create(item),
+            { response -> Log.i("MyAmplifyApp", "Updated Item with id: " + response.data.id) },
+            { error -> Log.e("MyAmplifyApp", "Update failed", error) }
         )
     }
 }

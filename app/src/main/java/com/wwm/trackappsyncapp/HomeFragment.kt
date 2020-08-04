@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun deleteTask(item: TrackItemModel) {
-
+        viewModel.delete(item);
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,5 +49,6 @@ class HomeFragment : Fragment() {
         view.findViewById<Button>(R.id.button_first).setOnClickListener {
             findNavController().navigate(R.id.action_HomeFragment_to_ItemFragment)
         }
+
     }
 }

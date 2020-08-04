@@ -44,15 +44,13 @@ class LoginActivity : AppCompatActivity() {
 
             try {
                 val authProviders = ApiAuthProviders.builder().oidcAuthProvider(AuthenticationServiceImpl).build()
-                Amplify.addPlugin(AWSDataStorePlugin())
-                Amplify.addPlugin(AWSApiPlugin()) // If using remote model synchronization
+                Amplify.addPlugin(AWSApiPlugin(authProviders)) // If using remote model synchronization
                 Amplify.configure(applicationContext)
                 Log.i("MyAmplifyApp", "Initialized Amplify")
             } catch (error: AmplifyException) {
                 Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
             }
 
-            Amplify.DataStore.clear(Action { Timber.d("Cache Cleared") }, Consumer { Timber.e("Error while clearing cache") })
             goToMainActivity(AuthenticationServiceImpl.idToken!!)
         }
     }

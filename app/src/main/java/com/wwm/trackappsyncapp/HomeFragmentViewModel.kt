@@ -5,92 +5,98 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.amplifyframework.api.ApiOperation
+import com.amplifyframework.api.graphql.GraphQLRequest
+import com.amplifyframework.api.graphql.PaginatedResult
+import com.amplifyframework.api.graphql.model.ModelMutation
+import com.amplifyframework.api.graphql.model.ModelPagination
+import com.amplifyframework.api.graphql.model.ModelQuery
+import com.amplifyframework.api.graphql.model.ModelSubscription
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.datastore.AWSDataStorePlugin
 import com.amplifyframework.datastore.generated.model.TrackSyncItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class HomeFragmentViewModel() : ViewModel() {
 
+    var subscription: ApiOperation<*>? = null
     private val _list = MutableLiveData<List<TrackItemModel>>()
     val list: LiveData<List<TrackItemModel>>
         get() = _list
 
     init {
-       subscribe()
+        //subscribe()
+        queryFirstPage()
     }
 
-    private fun subscribe() {
-        Amplify.DataStore.observe(
-            TrackSyncItem::class.java,
-            { Log.i("MyAmplifyApp", "Observation began.") },
-            {
-                Log.i("MyAmplifyApp", "Observing: ${it.item()}")
-                query()
+    fun subscribe() {
+        subscription = Amplify.API.subscribe(
+            ModelSubscription.onCreate(TrackSyncItem::class.java),
+            { Log.i("ApiQuickStart", "Subscription established") },
+            { onCreated ->
+                Log.i("ApiQuickStart", "Item create subscription received: " + onCreated)
             },
-            { Log.e("MyAmplifyApp", "Observation failed.", it) },
-            { Log.i("MyAmplifyApp", "Observation complete.") }
+            { onFailure -> Log.e("ApiQuickStart", "Subscription failed", onFailure) },
+            { Log.i("ApiQuickStart", "Subscription completed") }
         )
     }
 
-    fun query () {
-        Amplify.DataStore.query(TrackSyncItem::class.java, Where.matches(TrackSyncItem.OWNER.eq("sbteststg02")),
-            {
-                val list = mutableListOf<TrackItemModel>()
-                while (it.hasNext()) {
-                    val item = it.next()
-                    Log.i("MyAmplifyApp", "Owner: ${item.owner}")
-                    list.add(TrackItemModel(item.id, item.owner, item.pin, item.description))
-                }
-
-                _list.postValue(list)
-            },
-            { Log.e("MyAmplifyApp", "Query failed.", it) }
+    fun queryFirstPage() {
+        query(
+            ModelQuery.list(
+                TrackSyncItem::class.java,
+                ModelPagination.firstPage().withLimit(1_000)
+            )
         )
     }
 
-    fun delete(item: TrackItemModel){
-        Amplify.DataStore.query(TrackSyncItem::class.java, Where.id(item.id),
-            { matches ->
-                if (matches.hasNext()) {
-                    val post = matches.next()
-                    Amplify.DataStore.delete(post,
-                        {
-                            Log.i("MyAmplifyApp", "Deleted a post.")
-                        },
-                        {
-                            Log.e("MyAmplifyApp", "Delete failed.", it)
-                        }
-                    )
+    fun query(request: GraphQLRequest<PaginatedResult<TrackSyncItem>>) {
+        Amplify.API.query(
+            request,
+            { response ->
+                if (response.hasData()) {
+                    val list = mutableListOf<TrackItemModel>()
+                    for (item in response.data.items) {
+                        Log.d("MyAmplifyApp", item.pin)
+                        list.add(TrackItemModel(item.id, item.owner, item.pin, item.desc))
+                    }
+
+                    _list.postValue(list)
+                    if (response.data.hasNextResult()) {
+                        query(response.data.requestForNextResult)
+                    }
                 }
             },
-            { Log.e("MyAmplifyApp", "Query failed.", it) }
+            { failure -> Log.e("MyAmplifyApp", "Query failed.", failure) }
         )
     }
 
-    fun update(item: TrackItemModel){
-        Amplify.DataStore.query(TrackSyncItem::class.java, Where.id(item.id),
-            { matches ->
-                if (matches.hasNext()) {
-                    var post = matches.next()
-                    val edited = post.copyOfBuilder()
-                        .description("Just updated")
-                        .build()
-
-                    Amplify.DataStore.save(edited,
-                        {
-                            Log.i("MyAmplifyApp", "Deleted a post.")
-                        },
-                        {
-                            Log.e("MyAmplifyApp", "Delete failed.", it)
-                        }
-                    )
-                }
+    fun delete(trackItemModel: TrackItemModel) {
+        Amplify.API.query(
+            ModelQuery.get(TrackSyncItem::class.java, trackItemModel.id),
+            { response ->
+                Log.i("MyAmplifyApp", response.data.pin)
+                Amplify.API.mutate(
+                    ModelMutation.delete(response.data),
+                    { response ->
+                        Log.i("MyAmplifyApp", "Updated Todo with id: " + response.data.id)
+                        queryFirstPage()
+                    },
+                    { error -> Log.e("MyAmplifyApp", "Update failed", error) }
+                )
             },
-            { Log.e("MyAmplifyApp", "Query failed.", it) }
+            { error -> Log.e("MyAmplifyApp", "Query failed", error) }
         )
     }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        subscription?.cancel()
+    }
+
 }
 
 @ExperimentalCoroutinesApi

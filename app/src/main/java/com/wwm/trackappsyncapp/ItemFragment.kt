@@ -44,7 +44,7 @@ class ItemFragment : Fragment() {
             )
             viewModel.addItem(item)
             hideKeyboard()
-            findNavController().navigate(R.id.action_ItemFragment_to_HomeFragment)
+            findNavController().popBackStack()
         }
     }
 
